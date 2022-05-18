@@ -41,10 +41,6 @@ app.use(
     secret: "secret",
     resave: true,
     saveUninitialized: true,
-    cookie: {
-      secure: true,
-      httpOnly: true
-    }
   })
 );
 
@@ -161,12 +157,13 @@ app.post("/download", function (request, response) {
   if (request.session.loggedin) {
     var file_name = request.body.file;
 
+    // Change the filePath to current working directory using the "path" method
+    const rootDir = "history_files\\";
+    const filePath = path.join(process.cwd(), "/history_files/", file_name);
+    const filename = path.normalize(filePath);
+
     response.statusCode = 200;
     response.setHeader("Content-Type", "text/html");
-
-    // Change the filePath to current working directory using the "path" method
-    const filePath = path.join(process.cwd(), "/history_files/", file_name);
-    const rootDir = "history_files\\"
     console.log(filePath);
     try {
       if(filePath.includes(rootDir)){
